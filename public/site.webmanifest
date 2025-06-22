@@ -1,0 +1,24 @@
+{
+  "name": "위도 경도 찾기",
+  "short_name": "위도경도찾기",
+  "description": "빠르고 쉬운 위치 좌표 확인 서비스",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "orientation": "portrait",
+  "start_url": "/",
+  "lang": "ko",
+  "categories": ["productivity", "maps", "utilities"]
+} 
