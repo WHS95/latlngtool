@@ -8,7 +8,7 @@ export const viewport = {
 };
 
 export const metadata: Metadata = getMetadata({
-  title: "지도 링크 생성기",
+  title: "위도경도 링크 생성기",
   description:
     "현재 좌표로 구글 지도, 카카오맵, 네이버 지도 링크를 생성할 수 있습니다. 위도경도를 다양한 지도 서비스 링크로 변환하여 공유하세요.",
   asPath: "/links",
