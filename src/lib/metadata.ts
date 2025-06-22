@@ -12,7 +12,7 @@ export const META = {
   title: "위도경도 찾기 | 빠르고 쉬운 좌표 검색 서비스",
   description:
     "주소를 입력하면 정확한 위도와 경도를 찾아드립니다. 네이버 지도 기반의 빠르고 정확한 좌표 검색 서비스입니다.",
-  url: "https://latlngtool.com",
+  url: "https://latlngtool.vercel.app",
   ogImage: "/android-chrome-512x512.png",
   keywords: [
     "위도",

@@ -139,19 +139,19 @@ export default function BatchPage() {
             <div className='text-center'>
               <span className='text-sm text-gray-600'>문의: </span>
               <code className='text-sm bg-gray-100 px-2 py-1 rounded'>
-                support@latlngtool.com
+                support@latlngtool.vercel.app
               </code>
               <div className='flex justify-center gap-2 mt-2'>
                 <button
                   onClick={() =>
-                    copyToClipboard("support@latlngtool.com", "이메일 주소")
+                    copyToClipboard("support@latlngtool.vercel.app", "이메일 주소")
                   }
                   className='px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50'
                 >
                   이메일 복사
                 </button>
                 <a
-                  href='mailto:support@latlngtool.com?subject=위도경도 찾기 서비스 문의'
+                  href='mailto:support@latlngtool.vercel.app?subject=위도경도 찾기 서비스 문의'
                   className='px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700'
                 >
                   메일 보내기

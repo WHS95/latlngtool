@@ -50,7 +50,7 @@ export default function RootLayout({
               name: "위도 경도 찾기",
               description:
                 "주소만 입력하면 위도와 경도를 바로 확인하고 복사할 수 있는 무료 온라인 도구",
-              url: "https://latlngtool.com",
+              url: "https://latlngtool.vercel.app",
               applicationCategory: "UtilityApplication",
               operatingSystem: "Web Browser",
               offers: {

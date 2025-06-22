@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://latlngtool.com/sitemap.xml 
+Sitemap: https://latlngtool.vercel.app/sitemap.xml 
