@@ -79,6 +79,7 @@ export default function RootLayout({
             }),
           }}
         />
+        <GoogleAdSense />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-black`}
@@ -87,7 +88,6 @@ export default function RootLayout({
         {children}
         <Analytics />
         <SpeedInsights />
-        <GoogleAdSense />
       </body>
     </html>
   );
