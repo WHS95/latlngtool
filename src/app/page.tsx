@@ -9,6 +9,7 @@ import { useGeocoding } from "@/hooks/useGeocoding";
 import { useNaverMap } from "@/hooks/useNaverMap";
 import { SingleSearch } from "@/components/features/SingleSearch";
 import { BottomNavigation } from "@/components/layout/BottomNavigation";
+import { GoogleAd } from "@/components/ads/GoogleAd";
 
 export default function Home() {
   const mapRef = useRef<HTMLDivElement>(null);
@@ -155,6 +156,13 @@ export default function Home() {
               />
             </CardContent>
           </Card>
+
+          {/* 하단 광고 */}
+          <GoogleAd
+            adSlot='0987654321'
+            className='my-4'
+            style={{ display: "block", textAlign: "center" }}
+          />
         </div>
 
         {/* 문의하기 */}
