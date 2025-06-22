@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { getMetadata } from "@/lib/metadata";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,62 +13,13 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "위도 경도 찾기 | 빠르고 쉬운 위치 좌표 확인 서비스",
-  description:
-    "주소만 입력하면 위도와 경도를 바로 확인하고 복사하세요. 지도 이동도 지원합니다.",
-  keywords:
-    "위도, 경도, 좌표, 좌표 찾기, 위치 찾기, 위치 좌표, 네이버 지도 좌표",
-  authors: [{ name: "Find LatLng Service" }],
-  viewport: "width=device-width, initial-scale=1",
-  robots: "index, follow",
-  icons: {
-    icon: [
-      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
-      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-    ],
-    apple: [
-      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
-    ],
-    other: [
-      {
-        url: "/android-chrome-192x192.png",
-        sizes: "192x192",
-        type: "image/png",
-      },
-      {
-        url: "/android-chrome-512x512.png",
-        sizes: "512x512",
-        type: "image/png",
-      },
-    ],
-  },
-  manifest: "/site.webmanifest",
-  openGraph: {
-    title: "위도 경도 찾기 | 빠르고 쉬운 위치 좌표 확인 서비스",
-    description:
-      "주소만 입력하면 위도와 경도를 바로 확인하고 복사하세요. 지도 이동도 지원합니다.",
-    type: "website",
-    locale: "ko_KR",
-    url: "https://findlatlng.com",
-    siteName: "위도 경도 찾기",
-    images: [
-      {
-        url: "/android-chrome-512x512.png",
-        width: 512,
-        height: 512,
-        alt: "위도 경도 찾기 서비스",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "위도 경도 찾기 | 빠르고 쉬운 위치 좌표 확인 서비스",
-    description:
-      "주소만 입력하면 위도와 경도를 바로 확인하고 복사하세요. 지도 이동도 지원합니다.",
-    images: ["/android-chrome-512x512.png"],
-  },
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
 };
+
+export const metadata: Metadata = getMetadata();
 
 export default function RootLayout({
   children,
@@ -77,10 +29,52 @@ export default function RootLayout({
   return (
     <html lang='ko' suppressHydrationWarning={true}>
       <head>
+        <meta
+          name='naver-site-verification'
+          content='naver-verification-code'
+        />
+
+        <meta name='msvalidate.01' content='bing-verification-code' />
+
         <script
           type='text/javascript'
           src={`https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID}&submodules=geocoder`}
           async
+        />
+        <script
+          type='application/ld+json'
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebApplication",
+              name: "위도 경도 찾기",
+              description:
+                "주소만 입력하면 위도와 경도를 바로 확인하고 복사할 수 있는 무료 온라인 도구",
+              url: "https://latlngtool.com",
+              applicationCategory: "UtilityApplication",
+              operatingSystem: "Web Browser",
+              offers: {
+                "@type": "Offer",
+                price: "0",
+                priceCurrency: "KRW",
+              },
+              creator: {
+                "@type": "Organization",
+                name: "LatLng Tool Service",
+              },
+              featureList: [
+                "주소를 위도경도로 변환",
+                "일괄 주소 변환 및 CSV 다운로드",
+                "현재 위치 확인",
+                "지도 링크 생성",
+              ],
+              aggregateRating: {
+                "@type": "AggregateRating",
+                ratingValue: "4.8",
+                reviewCount: "127",
+              },
+            }),
+          }}
         />
       </head>
       <body

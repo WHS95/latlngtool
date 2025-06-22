@@ -4,22 +4,24 @@ import { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-
-import { useGeocoding } from "@/hooks/useGeocoding";
 import { useNaverMap } from "@/hooks/useNaverMap";
-import { SingleSearch } from "@/components/features/SingleSearch";
+import { LinkGenerator } from "@/components/features/LinkGenerator";
 import { BottomNavigation } from "@/components/layout/BottomNavigation";
+import { MapLinks } from "@/types/app";
 
-export default function Home() {
+export default function LinksPage() {
   const mapRef = useRef<HTMLDivElement>(null);
-  const { latitude, longitude, initMap, updateMapLocation } =
-    useNaverMap(mapRef);
-
-  const { searchHistory, searchAddress: searchSingleAddress } = useGeocoding();
+  const { latitude, longitude, initMap } = useNaverMap(mapRef);
 
   // 상태 관리
-  const [address, setAddress] = useState("");
   const [copyMessage, setCopyMessage] = useState("");
+
+  // 지도 링크 생성
+  const mapLinks: MapLinks = {
+    googleMapsUrl: `https://maps.google.com/maps?q=${latitude},${longitude}`,
+    kakaoMapUrl: `https://map.kakao.com/link/map/${latitude},${longitude}`,
+    naverMapUrl: `https://map.naver.com/v5/search/${latitude},${longitude}`,
+  };
 
   // 페이지 로드 시 지도 초기화
   useEffect(() => {
@@ -38,30 +40,14 @@ export default function Home() {
     }
   };
 
-  // 단일 주소 검색
-  const handleSingleSearch = () => {
-    searchSingleAddress(
-      address,
-      (lat, lng) => {
-        updateMapLocation(lat, lng);
-        setCopyMessage("위치를 찾았습니다!");
-        setTimeout(() => setCopyMessage(""), 2000);
-      },
-      (error) => {
-        setCopyMessage(error);
-        setTimeout(() => setCopyMessage(""), 3000);
-      }
-    );
-  };
-
   return (
     <div className='min-h-screen bg-white text-black pb-32'>
       {/* 헤더 */}
       <header className='bg-white border-b border-gray-200 py-4 px-4'>
         <div className='max-w-6xl mx-auto'>
-          <h1 className='text-2xl font-bold text-center'>위도 경도 찾기</h1>
+          <h1 className='text-2xl font-bold text-center'>지도 링크 생성기</h1>
           <p className='text-gray-600 text-center text-sm mt-2'>
-            주소를 입력하여 정확한 위도와 경도를 빠르게 확인하세요
+            현재 좌표로 구글, 카카오, 네이버 지도 링크를 생성하세요
           </p>
         </div>
       </header>
@@ -69,12 +55,12 @@ export default function Home() {
       {/* 메인 컨텐츠 */}
       <main className='max-w-4xl mx-auto p-4'>
         <div className='space-y-6'>
-          {/* 검색 */}
-          <SingleSearch
-            address={address}
-            setAddress={setAddress}
-            searchHistory={searchHistory}
-            onSearch={handleSingleSearch}
+          {/* 링크 생성기 */}
+          <LinkGenerator
+            latitude={latitude}
+            longitude={longitude}
+            mapLinks={mapLinks}
+            onCopy={copyToClipboard}
           />
 
           {/* 상태 메시지 */}
@@ -157,8 +143,8 @@ export default function Home() {
           </Card>
         </div>
 
-        {/* 문의하기 */}
-        {/* <Card className='mt-6'>
+        {/* 문의하기
+        <Card className='mt-6'>
           <CardContent className='pt-6'>
             <div className='text-center'>
               <span className='text-sm text-gray-600'>문의: </span>
@@ -166,20 +152,20 @@ export default function Home() {
                 support@latlngtool.com
               </code>
               <div className='flex justify-center gap-2 mt-2'>
-                <Button
-                  size='sm'
-                  variant='outline'
+                <button
                   onClick={() =>
                     copyToClipboard("support@latlngtool.com", "이메일 주소")
                   }
+                  className='px-3 py-1 text-sm border border-gray-300 rounded hover:bg-gray-50'
                 >
                   이메일 복사
-                </Button>
-                <Button size='sm' asChild>
-                  <a href='mailto:support@latlngtool.com?subject=위도경도 찾기 서비스 문의'>
-                    메일 보내기
-                  </a>
-                </Button>
+                </button>
+                <a
+                  href='mailto:support@latlngtool.com?subject=위도경도 찾기 서비스 문의'
+                  className='px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700'
+                >
+                  메일 보내기
+                </a>
               </div>
             </div>
           </CardContent>
@@ -187,19 +173,7 @@ export default function Home() {
       </main>
 
       {/* 모바일 하단 네비게이션 */}
-      <BottomNavigation activeTab='single' />
-
-      {/* 푸터 */}
-      <footer className='bg-gray-100 mt-12 py-8 px-4'>
-        <div className='max-w-4xl mx-auto text-center text-gray-600'>
-          <p className='text-sm'>
-            © 2025 위도경도 찾기 서비스. 빠르고 쉬운 위치 좌표 확인.
-          </p>
-          <p className='text-xs mt-2'>
-            지도를 이동하거나 주소를 검색하여 정확한 위치 좌표를 확인하세요.
-          </p>
-        </div>
-      </footer>
+      <BottomNavigation activeTab='links' />
     </div>
   );
 }

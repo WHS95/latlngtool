@@ -78,7 +78,7 @@ public/
 
 ## 문의
 
-- 이메일: support@findlatlng.com
+- 이메일: support@latlngtool.com
 - 주요 키워드: 위도, 경도, 좌표, 좌표 찾기, 위치 찾기, 위치 좌표, 네이버 지도 좌표
 
 ## 라이선스
