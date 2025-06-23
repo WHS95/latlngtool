@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BottomNavigation } from "@/components/layout/BottomNavigation";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function BlogPage() {
   const [copyMessage, setCopyMessage] = useState("");
@@ -332,7 +333,7 @@ export default function BlogPage() {
                   주소 하나를 정확한 좌표로 변환
                 </p>
                 <Button size='sm' asChild>
-                  <a href='/'>사용하기</a>
+                  <Link href='/'>사용하기</Link>
                 </Button>
               </div>
               <div className='text-center p-4 border rounded'>
