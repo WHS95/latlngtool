@@ -7,6 +7,15 @@ export interface LocationResult {
   lng: number;
 }
 
+export interface SearchResult {
+  roadAddress: string;
+  jibunAddress: string;
+  englishAddress: string;
+  x: string;
+  y: string;
+  distance: number;
+}
+
 export interface UserLocation {
   lat: number;
   lng: number;

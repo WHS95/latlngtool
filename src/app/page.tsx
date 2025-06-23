@@ -10,17 +10,20 @@ import { useNaverMap } from "@/hooks/useNaverMap";
 import { SingleSearch } from "@/components/features/SingleSearch";
 import { BottomNavigation } from "@/components/layout/BottomNavigation";
 import { GoogleAd } from "@/components/ads/GoogleAd";
+import { SearchResult } from "@/types/app";
 
 export default function Home() {
   const mapRef = useRef<HTMLDivElement>(null);
   const { latitude, longitude, initMap, updateMapLocation } =
     useNaverMap(mapRef);
 
-  const { searchHistory, searchAddress: searchSingleAddress } = useGeocoding();
+  const { searchHistory, searchAddressMultiple } = useGeocoding();
 
   // 상태 관리
   const [address, setAddress] = useState("");
   const [copyMessage, setCopyMessage] = useState("");
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  const [showResults, setShowResults] = useState(false);
 
   // 페이지 로드 시 지도 초기화
   useEffect(() => {
@@ -39,13 +42,21 @@ export default function Home() {
     }
   };
 
-  // 단일 주소 검색
+  // 다중 주소 검색
   const handleSingleSearch = () => {
-    searchSingleAddress(
+    setShowResults(false);
+    searchAddressMultiple(
       address,
-      (lat, lng) => {
-        updateMapLocation(lat, lng);
-        setCopyMessage("위치를 찾았습니다!");
+      (results) => {
+        setSearchResults(results);
+        setShowResults(true);
+        if (results.length > 0) {
+          const firstResult = results[0];
+          const lat = parseFloat(firstResult.y);
+          const lng = parseFloat(firstResult.x);
+          updateMapLocation(lat, lng);
+          setCopyMessage(`${results.length}개의 검색 결과를 찾았습니다!`);
+        }
         setTimeout(() => setCopyMessage(""), 2000);
       },
       (error) => {
@@ -53,6 +64,15 @@ export default function Home() {
         setTimeout(() => setCopyMessage(""), 3000);
       }
     );
+  };
+
+  // 특정 결과 선택
+  const handleSelectResult = (result: SearchResult) => {
+    const lat = parseFloat(result.y);
+    const lng = parseFloat(result.x);
+    updateMapLocation(lat, lng);
+    setCopyMessage("위치가 선택되었습니다!");
+    setTimeout(() => setCopyMessage(""), 2000);
   };
 
   return (
@@ -83,6 +103,70 @@ export default function Home() {
             <div className='p-3 bg-green-100 border border-green-300 rounded text-green-700 text-sm'>
               {copyMessage}
             </div>
+          )}
+
+          {/* 검색 결과 */}
+          {showResults && searchResults.length > 0 && (
+            <Card>
+              <CardHeader className='pb-2'>
+                <CardTitle className='text-lg'>
+                  검색 결과 ({searchResults.length}개)
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className='space-y-3'>
+                  {searchResults.map((result, index) => (
+                    <div
+                      key={index}
+                      className='p-3 border border-gray-200 rounded hover:bg-gray-50 cursor-pointer'
+                      onClick={() => handleSelectResult(result)}
+                    >
+                      <div className='flex justify-between items-start gap-4'>
+                        <div className='flex-1'>
+                          <p className='font-medium text-sm'>
+                            {result.roadAddress}
+                          </p>
+                          {result.jibunAddress !== result.roadAddress && (
+                            <p className='text-xs text-gray-600 mt-1'>
+                              {result.jibunAddress}
+                            </p>
+                          )}
+                          <p className='text-xs text-blue-600 mt-1'>
+                            위도: {parseFloat(result.y).toFixed(6)}, 경도:{" "}
+                            {parseFloat(result.x).toFixed(6)}
+                          </p>
+                        </div>
+                        <div className='flex gap-1'>
+                          <Button
+                            size='sm'
+                            variant='outline'
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              copyToClipboard(result.roadAddress, "주소");
+                            }}
+                          >
+                            주소복사
+                          </Button>
+                          <Button
+                            size='sm'
+                            variant='outline'
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              copyToClipboard(
+                                `${result.y},${result.x}`,
+                                "좌표"
+                              );
+                            }}
+                          >
+                            좌표복사
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
           )}
 
           {/* 현재 좌표 */}
