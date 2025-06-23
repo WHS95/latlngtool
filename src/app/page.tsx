@@ -191,6 +191,7 @@ export default function Home() {
                       onClick={() =>
                         copyToClipboard(latitude.toString(), "위도")
                       }
+                      className='bg-black text-white hover:bg-black/20'
                     >
                       복사
                     </Button>
@@ -211,6 +212,7 @@ export default function Home() {
                       onClick={() =>
                         copyToClipboard(longitude.toString(), "경도")
                       }
+                      className='bg-black text-white hover:bg-black/20'
                     >
                       복사
                     </Button>
@@ -221,7 +223,7 @@ export default function Home() {
                 onClick={() =>
                   copyToClipboard(`${latitude},${longitude}`, "위도,경도")
                 }
-                className='w-full mt-4'
+                className='w-full mt-4 bg-black text-white hover:bg-black/20'
               >
                 위도,경도 복사
               </Button>
