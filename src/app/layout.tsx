@@ -4,6 +4,7 @@ import { getMetadata } from "@/lib/metadata";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { GoogleAdSense } from "@/components/ads/GoogleAdSense";
+import { NaverMapLoader } from "@/components/maps/NaverMapLoader";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -39,11 +40,6 @@ export default function RootLayout({
 
         <meta name='msvalidate.01' content='bing-verification-code' />
 
-        <script
-          type='text/javascript'
-          src={`https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID}&submodules=geocoder`}
-          async
-        />
         <script
           type='application/ld+json'
           dangerouslySetInnerHTML={{
@@ -138,7 +134,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-black`}
         suppressHydrationWarning={true}
       >
-        {children}
+        <NaverMapLoader>
+          {children}
+        </NaverMapLoader>
         <Analytics />
         <SpeedInsights />
       </body>
