@@ -181,13 +181,6 @@ export default function Home() {
                           </div>
                         </div>
                       </div>
-                      {/* 검색 결과 사이사이 광고 - 매 3번째마다 */}
-                      {(index + 1) % 3 === 0 &&
-                        index < searchResults.length - 1 && (
-                          <div className='py-3'>
-                            <AdBanner />
-                          </div>
-                        )}
                     </div>
                   ))}
                 </div>
@@ -304,9 +297,6 @@ export default function Home() {
               />
             </CardContent>
           </Card>
-
-          {/* 하단 광고 */}
-          <AdBanner />
         </div>
 
         {/* 문의하기 */}
@@ -341,16 +331,10 @@ export default function Home() {
       {/* 모바일 하단 네비게이션 */}
       <BottomNavigation activeTab='single' />
 
-      {/* 스티키 광고 (모바일용) */}
-      {/* <StickyAd position="bottom" /> */}
-
       {/* 푸터 */}
       <footer className='bg-gray-100 mt-12 py-8 px-4'>
         <div className='max-w-4xl mx-auto'>
           {/* 푸터 상단 광고 */}
-          <div className='mb-6'>
-            <AdBanner />
-          </div>
 
           <div className='text-center text-gray-600 space-y-4'>
             <div className='bg-white p-4 rounded border'>
@@ -378,11 +362,6 @@ export default function Home() {
               주소 위경도 변환을 무료로 제공하는 1위 사이트입니다. 지도 위경도
               검색으로 정확한 좌표를 확인하세요.
             </p>
-          </div>
-
-          {/* 푸터 하단 광고 */}
-          <div className='mt-6'>
-            <AdBanner />
           </div>
         </div>
       </footer>
