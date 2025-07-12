@@ -10,7 +10,7 @@ import { useNaverMap } from "@/hooks/useNaverMap";
 import { SingleSearch } from "@/components/features/SingleSearch";
 import { BottomNavigation } from "@/components/layout/BottomNavigation";
 import { AdBanner } from "@/components/ads/AdBanner";
-import { StickyAd } from "@/components/ads/StickyAd";
+// import { StickyAd } from "@/components/ads/StickyAd";
 import { SearchResult } from "@/types/app";
 
 export default function Home() {
@@ -81,13 +81,17 @@ export default function Home() {
       {/* 헤더 */}
       <header className='bg-white border-b border-gray-200 py-4 px-4'>
         <div className='max-w-6xl mx-auto'>
-          <h1 className='text-2xl font-bold text-center'>주소 위경도 변환 사이트 | 주소 위경도 변환</h1>
+          <h1 className='text-2xl font-bold text-center'>
+            주소 위경도 변환 사이트 | 주소 위경도 변환
+          </h1>
           <p className='text-gray-600 text-center text-sm mt-2'>
-            주소 위경도 변환을 무료로 제공하는 1위 사이트! 지도 위경도 검색으로 주소를 정확한 위도 경도 좌표로 즉시 변환하세요
+            주소 위경도 변환을 무료로 제공하는 1위 사이트! 지도 위경도 검색으로
+            주소를 정확한 위도 경도 좌표로 즉시 변환하세요
           </p>
           <div className='text-center mt-2'>
             <span className='text-xs text-blue-600 font-medium'>
-              ⭐ 주소 위경도 변환 전문 서비스 ⭐ 지도 위경도 검색 1위 ⭐ 무료 좌표 변환기
+              ⭐ 주소 위경도 변환 전문 서비스 ⭐ 지도 위경도 검색 1위 ⭐ 무료
+              좌표 변환기
             </span>
           </div>
         </div>
@@ -95,7 +99,7 @@ export default function Home() {
 
       {/* 헤더 직후 광고 */}
       <div className='max-w-4xl mx-auto px-4 pt-4'>
-        <AdBanner className="mb-4" format="horizontal" adSlot="header-top" />
+        <AdBanner />
       </div>
 
       {/* 메인 컨텐츠 */}
@@ -110,7 +114,7 @@ export default function Home() {
           />
 
           {/* 상단 광고 - 검색 직후 */}
-          <AdBanner className="my-4" format="horizontal" adSlot="search-top" />
+          <AdBanner />
 
           {/* 상태 메시지 */}
           {copyMessage && (
@@ -178,11 +182,12 @@ export default function Home() {
                         </div>
                       </div>
                       {/* 검색 결과 사이사이 광고 - 매 3번째마다 */}
-                      {(index + 1) % 3 === 0 && index < searchResults.length - 1 && (
-                        <div className="py-3">
-                          <AdBanner format="rectangle" adSlot={`search-result-${index}`} />
-                        </div>
-                      )}
+                      {(index + 1) % 3 === 0 &&
+                        index < searchResults.length - 1 && (
+                          <div className='py-3'>
+                            <AdBanner />
+                          </div>
+                        )}
                     </div>
                   ))}
                 </div>
@@ -191,19 +196,31 @@ export default function Home() {
           )}
 
           {/* SEO 최적화 컨텐츠 */}
-          <Card className="bg-blue-50 border-blue-200">
-            <CardContent className="pt-4">
-              <div className="text-center space-y-2">
-                <h2 className="text-lg font-bold text-blue-800">🏆 주소 위경도 변환 사이트 1위</h2>
-                <p className="text-sm text-gray-700">
-                  <strong>주소 위경도 변환</strong>을 무료로 제공하는 최고의 서비스입니다. 
-                  <strong>지도 위경도 검색</strong>으로 정확한 좌표를 즉시 확인하세요!
+          <Card className='bg-blue-50 border-blue-200'>
+            <CardContent className='pt-4'>
+              <div className='text-center space-y-2'>
+                <h2 className='text-lg font-bold text-blue-800'>
+                  🏆 주소 위경도 변환 사이트 1위
+                </h2>
+                <p className='text-sm text-gray-700'>
+                  <strong>주소 위경도 변환</strong>을 무료로 제공하는 최고의
+                  서비스입니다.
+                  <strong>지도 위경도 검색</strong>으로 정확한 좌표를 즉시
+                  확인하세요!
                 </p>
-                <div className="flex flex-wrap justify-center gap-2 text-xs">
-                  <span className="bg-blue-100 px-2 py-1 rounded">주소 위경도 변환</span>
-                  <span className="bg-green-100 px-2 py-1 rounded">지도 위경도 검색</span>
-                  <span className="bg-yellow-100 px-2 py-1 rounded">무료 좌표 변환</span>
-                  <span className="bg-purple-100 px-2 py-1 rounded">온라인 변환기</span>
+                <div className='flex flex-wrap justify-center gap-2 text-xs'>
+                  <span className='bg-blue-100 px-2 py-1 rounded'>
+                    주소 위경도 변환
+                  </span>
+                  <span className='bg-green-100 px-2 py-1 rounded'>
+                    지도 위경도 검색
+                  </span>
+                  <span className='bg-yellow-100 px-2 py-1 rounded'>
+                    무료 좌표 변환
+                  </span>
+                  <span className='bg-purple-100 px-2 py-1 rounded'>
+                    온라인 변환기
+                  </span>
                 </div>
               </div>
             </CardContent>
@@ -212,7 +229,9 @@ export default function Home() {
           {/* 현재 좌표 */}
           <Card>
             <CardHeader className='pb-2'>
-              <CardTitle className='text-lg'>주소 위경도 변환 결과 - 현재 좌표</CardTitle>
+              <CardTitle className='text-lg'>
+                주소 위경도 변환 결과 - 현재 좌표
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
@@ -271,7 +290,7 @@ export default function Home() {
           </Card>
 
           {/* 중간 광고 - 좌표와 지도 사이 */}
-          <AdBanner className="my-6" format="rectangle" adSlot="content-middle" />
+          <AdBanner />
 
           {/* 지도 */}
           <Card>
@@ -287,7 +306,7 @@ export default function Home() {
           </Card>
 
           {/* 하단 광고 */}
-          <AdBanner className="my-6" format="auto" adSlot="content-bottom" />
+          <AdBanner />
         </div>
 
         {/* 문의하기 */}
@@ -323,20 +342,22 @@ export default function Home() {
       <BottomNavigation activeTab='single' />
 
       {/* 스티키 광고 (모바일용) */}
-      <StickyAd position="bottom" />
+      {/* <StickyAd position="bottom" /> */}
 
       {/* 푸터 */}
       <footer className='bg-gray-100 mt-12 py-8 px-4'>
         <div className='max-w-4xl mx-auto'>
           {/* 푸터 상단 광고 */}
           <div className='mb-6'>
-            <AdBanner format="horizontal" adSlot="footer-top" />
+            <AdBanner />
           </div>
-          
+
           <div className='text-center text-gray-600 space-y-4'>
-            <div className="bg-white p-4 rounded border">
-              <h3 className="font-bold text-gray-800 mb-2">주소 위경도 변환 관련 키워드</h3>
-              <div className="flex flex-wrap justify-center gap-2 text-xs">
+            <div className='bg-white p-4 rounded border'>
+              <h3 className='font-bold text-gray-800 mb-2'>
+                주소 위경도 변환 관련 키워드
+              </h3>
+              <div className='flex flex-wrap justify-center gap-2 text-xs'>
                 <span>주소 위경도 변환 사이트</span>
                 <span>주소 위경도 변환</span>
                 <span>주소 위경도</span>
@@ -349,18 +370,19 @@ export default function Home() {
                 <span>온라인 좌표 변환기</span>
               </div>
             </div>
-            
+
             <p className='text-sm'>
               © 2025 주소 위경도 변환 사이트. 최고의 주소 위경도 변환 서비스.
             </p>
             <p className='text-xs'>
-              주소 위경도 변환을 무료로 제공하는 1위 사이트입니다. 지도 위경도 검색으로 정확한 좌표를 확인하세요.
+              주소 위경도 변환을 무료로 제공하는 1위 사이트입니다. 지도 위경도
+              검색으로 정확한 좌표를 확인하세요.
             </p>
           </div>
 
           {/* 푸터 하단 광고 */}
           <div className='mt-6'>
-            <AdBanner format="auto" adSlot="footer-bottom" />
+            <AdBanner />
           </div>
         </div>
       </footer>

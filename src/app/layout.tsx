@@ -41,7 +41,7 @@ export default function RootLayout({
         <meta name='msvalidate.01' content='bing-verification-code' />
 
         <script
-          type='application/ld+json'
+          type='application/json'
           dangerouslySetInnerHTML={{
             __html: JSON.stringify([
               {
@@ -77,7 +77,8 @@ export default function RootLayout({
                   ratingValue: "4.9",
                   reviewCount: "2847",
                 },
-                keywords: "주소 위경도 변환 사이트, 주소 위경도 변환, 주소 위경도, 지도 위경도 검색",
+                keywords:
+                  "주소 위경도 변환 사이트, 주소 위경도 변환, 주소 위경도, 지도 위경도 검색",
               },
               {
                 "@context": "https://schema.org",
@@ -99,9 +100,7 @@ export default function RootLayout({
                 name: "주소 위경도 변환 사이트",
                 url: "https://latlngtool.vercel.app",
                 description: "주소 위경도 변환을 무료로 제공하는 전문 서비스",
-                sameAs: [
-                  "https://latlngtool.vercel.app",
-                ],
+                sameAs: ["https://latlngtool.vercel.app"],
               },
               {
                 "@context": "https://schema.org",
@@ -129,19 +128,17 @@ export default function RootLayout({
           }}
         />
         {/* <GoogleAdSense /> */}
-        <script 
-          async 
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5459038929652352"
-          crossOrigin="anonymous"
-        />
+        {/* <script
+          async
+          src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5459038929652352'
+          crossOrigin='anonymous'
+        ></script> */}
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-black`}
         suppressHydrationWarning={true}
       >
-        <NaverMapLoader>
-          {children}
-        </NaverMapLoader>
+        <NaverMapLoader>{children}</NaverMapLoader>
         <Analytics />
         <SpeedInsights />
       </body>

@@ -65,7 +65,7 @@ export default function LinksPage() {
           />
 
           {/* 상단 광고 */}
-          <AdBanner className="my-4" format="horizontal" />
+          <AdBanner />
 
           {/* 상태 메시지 */}
           {copyMessage && (
@@ -147,7 +147,7 @@ export default function LinksPage() {
           </Card>
 
           {/* 하단 광고 */}
-          <AdBanner className="my-6" format="auto" />
+          <AdBanner />
         </div>
 
         {/* 문의하기

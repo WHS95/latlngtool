@@ -122,7 +122,7 @@ export default function BatchPage() {
           />
 
           {/* 상단 광고 */}
-          <AdBanner className="my-4" format="horizontal" />
+          <AdBanner />
         </div>
 
         {/* 상태 메시지 */}
@@ -140,7 +140,7 @@ export default function BatchPage() {
         )}
 
         {/* 하단 광고 */}
-        <AdBanner className="my-6" format="auto" />
+        <AdBanner />
 
         {/* 문의하기 */}
         {/* <Card className='mt-6'>
