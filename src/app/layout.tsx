@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { getMetadata } from "@/lib/metadata";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-// import { GoogleAdSense } from "@/components/ads/GoogleAdSense";
+import { GoogleAdSense } from "@/components/ads/GoogleAdSense";
 import { NaverMapLoader } from "@/components/maps/NaverMapLoader";
 import "./globals.css";
 
@@ -127,7 +127,7 @@ export default function RootLayout({
             ]),
           }}
         />
-        {/* <GoogleAdSense /> */}
+        <GoogleAdSense />
         {/* <script
           async
           src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5459038929652352'
