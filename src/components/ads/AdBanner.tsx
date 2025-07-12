@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface AdBannerProps {
   className?: string;
@@ -16,8 +16,9 @@ declare global {
   }
 }
 
-// 전역 상태로 로드된 광고 추적
-const loadedAds = new Set<string>();
+// 전역 광고 관리
+let adCounter = 0;
+const initializedAds = new Set<string>();
 
 export function AdBanner({
   className = "",
@@ -27,109 +28,125 @@ export function AdBanner({
   adSlot = "2280704432",
 }: AdBannerProps) {
   const adRef = useRef<HTMLDivElement>(null);
-  const [adLoaded, setAdLoaded] = useState(false);
   const [isError, setIsError] = useState(false);
   
-  // 고유한 광고 ID 생성 (adSlot + format 조합)
-  const adId = `${adSlot}-${format}-${Math.random().toString(36).substr(2, 5)}`;
-
-  const loadAd = useCallback(() => {
-    try {
-      // 이미 로드된 광고인지 확인
-      if (adLoaded || !adRef.current || loadedAds.has(adId)) {
-        return;
-      }
-
-      // ins 요소가 이미 광고가 로드되어 있는지 확인
-      const insElement = adRef.current.querySelector('ins.adsbygoogle');
-      if (insElement) {
-        const status = insElement.getAttribute('data-adsbygoogle-status');
-        if (status && status !== 'error') {
-          setAdLoaded(true);
-          loadedAds.add(adId);
-          return;
-        }
-      }
-
-      // AdSense 스크립트가 로드되어 있는지 확인
-      if (typeof window !== "undefined" && window.adsbygoogle) {
-        // 광고 ID를 전역 세트에 추가
-        loadedAds.add(adId);
-        
-        // 광고 푸시 with better error handling
-        setTimeout(() => {
-          try {
-            // 네트워크 상태 확인
-            if (navigator.onLine === false) {
-              console.warn("AdSense: 오프라인 상태입니다.");
-              setIsError(true);
-              loadedAds.delete(adId);
-              return;
-            }
-
-            (window.adsbygoogle as unknown[]).push({});
-            setAdLoaded(true);
-          } catch (error: unknown) {
-            const errorMessage = error instanceof Error ? error.message : String(error);
-            console.warn("AdSense push error (이는 정상적인 경우가 많습니다):", errorMessage);
-            
-            // 특정 에러는 무시 (정상적인 경우)
-            if (errorMessage && (
-              errorMessage.includes("adsbygoogle") ||
-              errorMessage.includes("400") ||
-              errorMessage.includes("network")
-            )) {
-              // 이런 경우는 광고 로드 시도는 성공한 것으로 간주
-              setAdLoaded(true);
-              return;
-            }
-            
-            setIsError(true);
-            loadedAds.delete(adId);
-            
-            // 에러 발생 시 재시도 (한 번만)
-            setTimeout(() => {
-              if (!adLoaded && !loadedAds.has(adId)) {
-                try {
-                  loadedAds.add(adId);
-                  (window.adsbygoogle as unknown[]).push({});
-                  setAdLoaded(true);
-                  setIsError(false);
-                } catch (retryError: unknown) {
-                  const retryErrorMessage = retryError instanceof Error ? retryError.message : String(retryError);
-                  console.warn("AdSense retry error:", retryErrorMessage);
-                  loadedAds.delete(adId);
-                }
-              }
-            }, 3000);
-          }
-        }, 100);
-      } else {
-        // AdSense 스크립트가 아직 로드되지 않은 경우
-        setTimeout(() => loadAd(), 500);
-      }
-    } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : String(error);
-      console.warn("AdSense load error:", errorMessage);
-      setIsError(true);
-      loadedAds.delete(adId);
-    }
-  }, [adLoaded, adId]);
+  // 고유한 광고 ID 생성 (useState로 고정값 생성)
+  const [adId] = useState(() => `ad-${adSlot}-${format}-${++adCounter}`);
 
   useEffect(() => {
-    // 컴포넌트 마운트 후 광고 로드
-    const timer = setTimeout(loadAd, 300);
+    const loadAd = async () => {
+      try {
+        // 이미 초기화된 광고인지 확인
+        if (initializedAds.has(adId) || !adRef.current) {
+          return;
+        }
+
+        // AdSense 스크립트 로드 대기
+        let attempts = 0;
+        const maxAttempts = 20;
+        
+        while (attempts < maxAttempts) {
+          if (typeof window !== "undefined" && window.adsbygoogle) {
+            break;
+          }
+          await new Promise(resolve => setTimeout(resolve, 250));
+          attempts++;
+        }
+
+        if (attempts >= maxAttempts) {
+          console.warn("AdSense 스크립트 로드 타임아웃");
+          setIsError(true);
+          return;
+        }
+
+        // ins 요소 확인
+        const insElement = adRef.current.querySelector('ins.adsbygoogle');
+        if (!insElement) {
+          console.warn("AdSense ins 요소를 찾을 수 없습니다");
+          setIsError(true);
+          return;
+        }
+
+        // 이미 광고가 로드되어 있는지 확인
+        const status = insElement.getAttribute('data-adsbygoogle-status');
+        if (status === 'done') {
+          initializedAds.add(adId);
+          return;
+        }
+
+        // 광고 로드 시도
+        initializedAds.add(adId);
+        
+        try {
+          // 네트워크 연결 확인
+          if (navigator.onLine === false) {
+            throw new Error("오프라인 상태");
+          }
+
+          // AdSense 초기화
+          if (!window.adsbygoogle) {
+            window.adsbygoogle = [];
+          }
+
+          // 광고 푸시
+          window.adsbygoogle.push({});
+          console.log(`AdSense 광고 로드 성공 (${adId})`);
+          
+        } catch (pushError: unknown) {
+          const pushErrorMessage = pushError instanceof Error ? pushError.message : String(pushError);
+          console.warn(`AdSense 로드 에러 (${adId}):`, pushErrorMessage);
+          
+          // 일부 에러는 정상적인 경우로 처리
+          if (pushErrorMessage && (
+            pushErrorMessage.includes("TagError") ||
+            pushErrorMessage.includes("already have ads") ||
+            pushErrorMessage.includes("400")
+          )) {
+            // 이미 광고가 로드된 상태로 간주
+            console.log(`AdSense 정상 로드 (${adId})`);
+          } else {
+            setIsError(true);
+            initializedAds.delete(adId);
+          }
+        }
+
+      } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        console.warn(`AdSense 초기화 에러 (${adId}):`, errorMessage);
+        setIsError(true);
+        initializedAds.delete(adId);
+      }
+    };
+
+    // 컴포넌트 마운트 후 지연 로드
+    const timer = setTimeout(loadAd, 500);
 
     return () => {
       clearTimeout(timer);
-      // 컴포넌트 언마운트 시 정리
-      loadedAds.delete(adId);
+      initializedAds.delete(adId);
     };
-  }, [loadAd, adId]);
+  }, [adId]);
 
-  // 에러 상태일 때는 빈 div 렌더링
+  // 에러 상태에서는 빈 공간 표시
   if (isError) {
-    return <div className={`ad-banner-error ${className}`} style={style} />;
+    return (
+      <div 
+        className={`ad-placeholder ${className}`} 
+        style={{ 
+          minHeight: "90px", 
+          backgroundColor: "#f8f9fa", 
+          border: "1px dashed #dee2e6",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          color: "#6c757d",
+          fontSize: "12px",
+          ...style 
+        }}
+      >
+        광고 로드 중...
+      </div>
+    );
   }
 
   return (
@@ -146,7 +163,6 @@ export function AdBanner({
         data-ad-slot={adSlot}
         data-ad-format={format}
         data-full-width-responsive={responsive.toString()}
-        data-ad-unique-id={adId} // 고유 식별자 추가
       />
     </div>
   );
