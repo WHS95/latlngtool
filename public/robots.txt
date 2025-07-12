@@ -1,4 +1,21 @@
 User-agent: *
 Allow: /
+Crawl-delay: 1
 
-Sitemap: https://latlngtool.vercel.app/sitemap.xml 
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: NaverBot
+Allow: /
+Crawl-delay: 1
+
+Sitemap: https://latlngtool.vercel.app/sitemap.xml
+
+# 주소 위경도 변환 사이트
+# 주소 위경도 변환 무료 서비스
+# 지도 위경도 검색 1위 

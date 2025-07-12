@@ -49,7 +49,11 @@ export function StickyAd({ position = "bottom", className = "" }: StickyAdProps)
               ×
             </button>
           )}
-          <AdBanner format="horizontal" responsive={true} />
+          <AdBanner 
+            format="horizontal" 
+            responsive={true} 
+            adSlot="sticky-ad-slot" 
+          />
         </div>
       </div>
     </div>

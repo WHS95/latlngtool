@@ -8,12 +8,12 @@ export const viewport = {
 };
 
 export const metadata: Metadata = getMetadata({
-  title: "현재 내 위치 확인기",
+  title: "현재 내 위치 확인기 | GPS 위경도 찾기 | 실시간 위치 좌표",
   description:
-    "GPS를 통해 현재 위치를 확인하고 정확한 위도와 경도를 얻을 수 있습니다. 브라우저 위치 서비스를 이용한 실시간 좌표 확인 서비스입니다.",
+    "GPS를 통해 현재 위치를 확인하고 정확한 위도와 경도를 얻을 수 있습니다. 브라우저 위치 서비스를 이용한 실시간 좌표 확인 서비스로 무료로 내 위치의 정확한 GPS 좌표를 확인하세요.",
   asPath: "/location",
   keywords:
-    "현재위치, GPS위치, 내위치확인, 실시간좌표, 위치서비스, 브라우저위치, 현재좌표, 위치찾기",
+    "현재 위치 확인, GPS 위치, 내 위치 확인, 실시간 좌표, 위치 서비스, 브라우저 위치, 현재 좌표, 위치 찾기, GPS 좌표, 내 위치 GPS, 현재 위경도, 실시간 위경도, 무료 위치 확인",
 });
 
 export default function LocationLayout({
