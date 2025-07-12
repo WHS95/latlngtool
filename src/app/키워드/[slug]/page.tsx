@@ -13,9 +13,9 @@ import { StickyAd } from "@/components/ads/StickyAd";
 import { SearchResult } from "@/types/app";
 
 interface KeywordPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 const keywordData: Record<string, {
@@ -64,8 +64,17 @@ export default function KeywordPage({ params }: KeywordPageProps) {
   const [copyMessage, setCopyMessage] = useState("");
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [showResults, setShowResults] = useState(false);
+  const [slug, setSlug] = useState<string>("");
 
-  const keywordInfo = keywordData[params.slug] || keywordData["주소-위경도"];
+  const keywordInfo = keywordData[slug] || keywordData["주소-위경도"];
+
+  useEffect(() => {
+    const getParams = async () => {
+      const resolvedParams = await params;
+      setSlug(resolvedParams.slug);
+    };
+    getParams();
+  }, [params]);
 
   useEffect(() => {
     initMap();
@@ -126,7 +135,7 @@ export default function KeywordPage({ params }: KeywordPageProps) {
         <div className='max-w-6xl mx-auto text-center'>
           <h1 className='text-3xl font-bold mb-2'>{keywordInfo.h1}</h1>
           <p className='text-lg opacity-90'>
-            🥇 {params.slug.replace('-', ' ')} 1위 서비스 | 무료 전문 사이트
+            🥇 {slug.replace('-', ' ')} 1위 서비스 | 무료 전문 사이트
           </p>
           <div className='mt-4 bg-black bg-opacity-20 p-3 rounded'>
             <p className='text-sm'>
@@ -145,7 +154,7 @@ export default function KeywordPage({ params }: KeywordPageProps) {
           <Card className={`border-2 ${colorClasses[keywordInfo.color as keyof typeof colorClasses]?.split(' ')[1] || 'border-purple-200'}`}>
             <CardHeader>
               <CardTitle className={colorClasses[keywordInfo.color as keyof typeof colorClasses]?.split(' ')[2] || 'text-purple-800'}>
-                🔍 {params.slug.replace('-', ' ')} 검색
+                🔍 {slug.replace('-', ' ')} 검색
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -157,7 +166,7 @@ export default function KeywordPage({ params }: KeywordPageProps) {
               />
               <div className="mt-3 p-3 bg-yellow-50 border border-yellow-200 rounded">
                 <p className="text-sm text-yellow-800">
-                  💡 <strong>{params.slug.replace('-', ' ')} 팁:</strong> 정확한 주소를 입력하면 더 정확한 결과를 얻을 수 있습니다.
+                  💡 <strong>{slug.replace('-', ' ')} 팁:</strong> 정확한 주소를 입력하면 더 정확한 결과를 얻을 수 있습니다.
                 </p>
               </div>
             </CardContent>
@@ -168,7 +177,7 @@ export default function KeywordPage({ params }: KeywordPageProps) {
           <Card className="bg-gradient-to-r from-blue-50 to-green-50 border-blue-200">
             <CardContent className="pt-6">
               <h2 className="text-xl font-bold text-center text-blue-800 mb-4">
-                🏆 최고의 {params.slug.replace('-', ' ')} 서비스
+                🏆 최고의 {slug.replace('-', ' ')} 서비스
               </h2>
               <div className="grid md:grid-cols-2 gap-4 text-sm">
                 <div>
@@ -202,7 +211,7 @@ export default function KeywordPage({ params }: KeywordPageProps) {
             <Card>
               <CardHeader className='pb-2'>
                 <CardTitle className='text-lg text-blue-800'>
-                  {params.slug.replace('-', ' ')} 검색 결과 ({searchResults.length}개)
+                  {slug.replace('-', ' ')} 검색 결과 ({searchResults.length}개)
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -267,7 +276,7 @@ export default function KeywordPage({ params }: KeywordPageProps) {
 
           <Card>
             <CardHeader className='pb-2'>
-              <CardTitle className='text-lg text-blue-800'>📍 {params.slug.replace('-', ' ')} 결과 좌표</CardTitle>
+              <CardTitle className='text-lg text-blue-800'>📍 {slug.replace('-', ' ')} 결과 좌표</CardTitle>
             </CardHeader>
             <CardContent>
               <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
@@ -339,7 +348,7 @@ export default function KeywordPage({ params }: KeywordPageProps) {
           <AdBanner format="horizontal" />
           
           <div className='text-center space-y-4 mt-6'>
-            <h3 className="text-xl font-bold">{params.slug.replace('-', ' ')} 관련 서비스</h3>
+            <h3 className="text-xl font-bold">{slug.replace('-', ' ')} 관련 서비스</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
               <div>주소 위경도 변환</div>
               <div>지도 위경도 검색</div>
@@ -352,7 +361,7 @@ export default function KeywordPage({ params }: KeywordPageProps) {
             </div>
             
             <p className='text-sm opacity-90'>
-              © 2025 {params.slug.replace('-', ' ')} 사이트. 최고의 {params.slug.replace('-', ' ')} 전문 서비스.
+              © 2025 {slug.replace('-', ' ')} 사이트. 최고의 {slug.replace('-', ' ')} 전문 서비스.
             </p>
           </div>
 

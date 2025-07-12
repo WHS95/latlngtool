@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 interface KeywordLayoutProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
   children: React.ReactNode;
 }
 
@@ -34,8 +34,9 @@ const keywordMeta: Record<string, {
   }
 };
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const meta = keywordMeta[params.slug] || keywordMeta["주소-위경도"];
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const meta = keywordMeta[slug] || keywordMeta["주소-위경도"];
   
   return {
     title: meta.title,
@@ -44,8 +45,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     openGraph: {
       title: meta.title,
       description: meta.description,
-      url: `https://latlngtool.vercel.app/키워드/${params.slug}`,
-      siteName: `${params.slug.replace('-', ' ')} 사이트`,
+      url: `https://latlngtool.vercel.app/키워드/${slug}`,
+      siteName: `${slug.replace('-', ' ')} 사이트`,
       locale: "ko_KR",
       type: "website",
     },
@@ -55,7 +56,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       description: meta.description,
     },
     alternates: {
-      canonical: `https://latlngtool.vercel.app/키워드/${params.slug}`,
+      canonical: `https://latlngtool.vercel.app/키워드/${slug}`,
     },
     robots: {
       index: true,
@@ -81,8 +82,9 @@ export async function generateStaticParams() {
   ];
 }
 
-export default function KeywordLayout({ params, children }: KeywordLayoutProps) {
-  const keywordName = params.slug.replace('-', ' ');
+export default async function KeywordLayout({ params, children }: KeywordLayoutProps) {
+  const { slug } = await params;
+  const keywordName = slug.replace('-', ' ');
   
   return (
     <>
@@ -94,7 +96,7 @@ export default function KeywordLayout({ params, children }: KeywordLayoutProps) 
             "@type": "WebPage",
             name: `${keywordName} 사이트`,
             description: `${keywordName}을 무료로 제공하는 전문 사이트`,
-            url: `https://latlngtool.vercel.app/키워드/${params.slug}`,
+            url: `https://latlngtool.vercel.app/키워드/${slug}`,
             mainEntity: {
               "@type": "SoftwareApplication",
               name: `${keywordName} 도구`,
@@ -126,7 +128,7 @@ export default function KeywordLayout({ params, children }: KeywordLayoutProps) 
                   "@type": "ListItem",
                   position: 2,
                   name: keywordName,
-                  item: `https://latlngtool.vercel.app/키워드/${params.slug}`,
+                  item: `https://latlngtool.vercel.app/키워드/${slug}`,
                 },
               ],
             },
