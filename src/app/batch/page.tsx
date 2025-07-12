@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useGeocoding } from "@/hooks/useGeocoding";
 import { BatchConverter } from "@/components/features/BatchConverter";
 import { BottomNavigation } from "@/components/layout/BottomNavigation";
+import { AdBanner } from "@/components/ads/AdBanner";
 import { LocationResult } from "@/types/app";
 
 export default function BatchPage() {
@@ -111,13 +112,18 @@ export default function BatchPage() {
 
       {/* 메인 컨텐츠 */}
       <main className='max-w-6xl mx-auto p-4'>
-        <BatchConverter
-          batchAddresses={batchAddresses}
-          setBatchAddresses={setBatchAddresses}
-          batchResults={batchResults}
-          onProcess={handleBatchProcess}
-          onDownloadCSV={handleDownloadCSV}
-        />
+        <div className='space-y-6'>
+          <BatchConverter
+            batchAddresses={batchAddresses}
+            setBatchAddresses={setBatchAddresses}
+            batchResults={batchResults}
+            onProcess={handleBatchProcess}
+            onDownloadCSV={handleDownloadCSV}
+          />
+
+          {/* 상단 광고 */}
+          <AdBanner className="my-4" format="horizontal" />
+        </div>
 
         {/* 상태 메시지 */}
         {copyMessage && (
@@ -132,6 +138,9 @@ export default function BatchPage() {
             주소를 변환 중입니다... 잠시만 기다려주세요.
           </div>
         )}
+
+        {/* 하단 광고 */}
+        <AdBanner className="my-6" format="auto" />
 
         {/* 문의하기 */}
         {/* <Card className='mt-6'>

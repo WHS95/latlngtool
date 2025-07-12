@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { useNaverMap } from "@/hooks/useNaverMap";
 import { LinkGenerator } from "@/components/features/LinkGenerator";
 import { BottomNavigation } from "@/components/layout/BottomNavigation";
+import { AdBanner } from "@/components/ads/AdBanner";
 import { MapLinks } from "@/types/app";
 
 export default function LinksPage() {
@@ -62,6 +63,9 @@ export default function LinksPage() {
             mapLinks={mapLinks}
             onCopy={copyToClipboard}
           />
+
+          {/* 상단 광고 */}
+          <AdBanner className="my-4" format="horizontal" />
 
           {/* 상태 메시지 */}
           {copyMessage && (
@@ -141,6 +145,9 @@ export default function LinksPage() {
               />
             </CardContent>
           </Card>
+
+          {/* 하단 광고 */}
+          <AdBanner className="my-6" format="auto" />
         </div>
 
         {/* 문의하기

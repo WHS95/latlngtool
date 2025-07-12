@@ -9,7 +9,8 @@ import { useGeocoding } from "@/hooks/useGeocoding";
 import { useNaverMap } from "@/hooks/useNaverMap";
 import { SingleSearch } from "@/components/features/SingleSearch";
 import { BottomNavigation } from "@/components/layout/BottomNavigation";
-import { GoogleAd } from "@/components/ads/GoogleAd";
+import { AdBanner } from "@/components/ads/AdBanner";
+import { StickyAd } from "@/components/ads/StickyAd";
 import { SearchResult } from "@/types/app";
 
 export default function Home() {
@@ -87,6 +88,11 @@ export default function Home() {
         </div>
       </header>
 
+      {/* 헤더 직후 광고 */}
+      <div className='max-w-4xl mx-auto px-4 pt-4'>
+        <AdBanner className="mb-4" format="horizontal" />
+      </div>
+
       {/* 메인 컨텐츠 */}
       <main className='max-w-4xl mx-auto p-4'>
         <div className='space-y-6'>
@@ -97,6 +103,9 @@ export default function Home() {
             searchHistory={searchHistory}
             onSearch={handleSingleSearch}
           />
+
+          {/* 상단 광고 - 검색 직후 */}
+          <AdBanner className="my-4" format="horizontal" />
 
           {/* 상태 메시지 */}
           {copyMessage && (
@@ -116,52 +125,59 @@ export default function Home() {
               <CardContent>
                 <div className='space-y-3'>
                   {searchResults.map((result, index) => (
-                    <div
-                      key={index}
-                      className='p-3 border border-gray-200 rounded hover:bg-gray-50 cursor-pointer'
-                      onClick={() => handleSelectResult(result)}
-                    >
-                      <div className='flex justify-between items-start gap-4'>
-                        <div className='flex-1'>
-                          <p className='font-medium text-sm'>
-                            {result.roadAddress}
-                          </p>
-                          {result.jibunAddress !== result.roadAddress && (
-                            <p className='text-xs text-gray-600 mt-1'>
-                              {result.jibunAddress}
+                    <div key={index}>
+                      <div
+                        className='p-3 border border-gray-200 rounded hover:bg-gray-50 cursor-pointer'
+                        onClick={() => handleSelectResult(result)}
+                      >
+                        <div className='flex justify-between items-start gap-4'>
+                          <div className='flex-1'>
+                            <p className='font-medium text-sm'>
+                              {result.roadAddress}
                             </p>
-                          )}
-                          <p className='text-xs text-blue-600 mt-1'>
-                            위도: {parseFloat(result.y).toFixed(6)}, 경도:{" "}
-                            {parseFloat(result.x).toFixed(6)}
-                          </p>
-                        </div>
-                        <div className='flex gap-1'>
-                          <Button
-                            size='sm'
-                            variant='outline'
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              copyToClipboard(result.roadAddress, "주소");
-                            }}
-                          >
-                            주소복사
-                          </Button>
-                          <Button
-                            size='sm'
-                            variant='outline'
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              copyToClipboard(
-                                `${result.y},${result.x}`,
-                                "좌표"
-                              );
-                            }}
-                          >
-                            좌표복사
-                          </Button>
+                            {result.jibunAddress !== result.roadAddress && (
+                              <p className='text-xs text-gray-600 mt-1'>
+                                {result.jibunAddress}
+                              </p>
+                            )}
+                            <p className='text-xs text-blue-600 mt-1'>
+                              위도: {parseFloat(result.y).toFixed(6)}, 경도:{" "}
+                              {parseFloat(result.x).toFixed(6)}
+                            </p>
+                          </div>
+                          <div className='flex gap-1'>
+                            <Button
+                              size='sm'
+                              variant='outline'
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                copyToClipboard(result.roadAddress, "주소");
+                              }}
+                            >
+                              주소복사
+                            </Button>
+                            <Button
+                              size='sm'
+                              variant='outline'
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                copyToClipboard(
+                                  `${result.y},${result.x}`,
+                                  "좌표"
+                                );
+                              }}
+                            >
+                              좌표복사
+                            </Button>
+                          </div>
                         </div>
                       </div>
+                      {/* 검색 결과 사이사이 광고 - 매 3번째마다 */}
+                      {(index + 1) % 3 === 0 && index < searchResults.length - 1 && (
+                        <div className="py-3">
+                          <AdBanner format="rectangle" />
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -230,6 +246,9 @@ export default function Home() {
             </CardContent>
           </Card>
 
+          {/* 중간 광고 - 좌표와 지도 사이 */}
+          <AdBanner className="my-6" format="rectangle" />
+
           {/* 지도 */}
           <Card>
             <CardHeader className='pb-2'>
@@ -244,11 +263,7 @@ export default function Home() {
           </Card>
 
           {/* 하단 광고 */}
-          <GoogleAd
-            adSlot='0987654321'
-            className='my-4'
-            style={{ display: "block", textAlign: "center" }}
-          />
+          <AdBanner className="my-6" format="auto" />
         </div>
 
         {/* 문의하기 */}
@@ -283,15 +298,30 @@ export default function Home() {
       {/* 모바일 하단 네비게이션 */}
       <BottomNavigation activeTab='single' />
 
+      {/* 스티키 광고 (모바일용) */}
+      <StickyAd position="bottom" />
+
       {/* 푸터 */}
       <footer className='bg-gray-100 mt-12 py-8 px-4'>
-        <div className='max-w-4xl mx-auto text-center text-gray-600'>
-          <p className='text-sm'>
-            © 2025 위도경도 찾기 서비스. 빠르고 쉬운 위치 좌표 확인.
-          </p>
-          <p className='text-xs mt-2'>
-            지도를 이동하거나 주소를 검색하여 정확한 위치 좌표를 확인하세요.
-          </p>
+        <div className='max-w-4xl mx-auto'>
+          {/* 푸터 상단 광고 */}
+          <div className='mb-6'>
+            <AdBanner format="horizontal" />
+          </div>
+          
+          <div className='text-center text-gray-600'>
+            <p className='text-sm'>
+              © 2025 위도경도 찾기 서비스. 빠르고 쉬운 위치 좌표 확인.
+            </p>
+            <p className='text-xs mt-2'>
+              지도를 이동하거나 주소를 검색하여 정확한 위치 좌표를 확인하세요.
+            </p>
+          </div>
+
+          {/* 푸터 하단 광고 */}
+          <div className='mt-6'>
+            <AdBanner format="auto" />
+          </div>
         </div>
       </footer>
     </div>

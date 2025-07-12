@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { BottomNavigation } from "@/components/layout/BottomNavigation";
+import { AdBanner } from "@/components/ads/AdBanner";
 
 export default function LocationPage() {
   const [latitude, setLatitude] = useState<number>(37.5665);
@@ -89,6 +90,9 @@ export default function LocationPage() {
               </p>
             </CardContent>
           </Card>
+
+          {/* 상단 광고 */}
+          <AdBanner className="my-4" format="horizontal" />
 
           {/* 상태 메시지 */}
           {copyMessage && (
@@ -190,6 +194,9 @@ export default function LocationPage() {
               </div>
             </CardContent>
           </Card>
+
+          {/* 하단 광고 */}
+          <AdBanner className="my-6" format="auto" />
         </div>
       </main>
 
